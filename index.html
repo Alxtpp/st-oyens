@@ -63,8 +63,8 @@
   .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:13.5px;font-weight:600;padding:15px 30px;transition:.25s;cursor:pointer;border:1px solid transparent;border-radius:2px}
   .btn-primary{background:var(--bordeaux);color:#FBF8F2}
   .btn-primary:hover{background:var(--bordeaux-deep);transform:translateY(-2px)}
-  .btn-ghost{border-color:rgba(251,248,242,.6);color:#FBF8F2}
-  .btn-ghost:hover{background:rgba(251,248,242,.16);border-color:#FBF8F2}
+  .btn-ghost{background:rgba(45,40,34,.42);border-color:rgba(251,248,242,.75);color:#FBF8F2;backdrop-filter:blur(4px)}
+  .btn-ghost:hover{background:rgba(45,40,34,.62);border-color:#FBF8F2}
   .seal{position:absolute;right:34px;bottom:78px;z-index:2;width:118px;height:118px;border:1px solid rgba(251,248,242,.65);border-radius:50%;display:grid;place-content:center;text-align:center;color:#FBF8F2;backdrop-filter:blur(3px)}
   .seal b{font-family:var(--disp);font-weight:700;font-size:30px;line-height:1;display:block}
   .seal span{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;display:block;margin-top:7px;opacity:.92}
@@ -74,7 +74,7 @@
   .idstrip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:0;padding-right:0}
   .idcell{padding:38px 30px;border-right:1px solid var(--line);display:flex;align-items:baseline;gap:14px}
   .idcell:last-child{border-right:0}
-  .idcell b{font-family:var(--disp);font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:.85;color:var(--bordeaux)}
+  .idcell b{font-family:var(--disp);font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:.85;color:var(--bordeaux);white-space:nowrap}
   .idcell b small{font-size:.45em;font-weight:600}
   .idcell span{font-size:12.5px;color:var(--mute);max-width:15ch;line-height:1.4}
 
@@ -117,15 +117,22 @@
   .plan-intro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px}
   .plan-hint{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
   .plan-readout{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--bordeaux);min-height:23px}
-  .villa-plan{position:relative;background:var(--cream);border:1px solid var(--line);overflow:hidden;margin-bottom:34px}
-  .villa-plan img{width:100%;height:auto;display:block}
+  .villa-plan-scroll{margin-bottom:34px}
+  .villa-plan{position:relative;background:var(--cream);border:1px solid var(--line);overflow:hidden}
+  /* Sur mobile le plan est agrandi et défile horizontalement : sinon les lots
+     seraient trop petits pour être touchés au doigt. */
+  @media (max-width:720px){
+    .villa-plan-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .villa-plan{width:660px}
+  }
+  .villa-plan img{width:100%;height:auto;display:block;aspect-ratio:1600/1056}
   .villa-plan svg{position:absolute;inset:0;width:100%;height:100%}
-  .villa-plan .lot{fill:transparent;stroke:transparent;stroke-width:6;cursor:pointer;transition:fill .22s,stroke .22s}
+  .villa-plan .lot{fill:transparent;stroke:transparent;stroke-width:8;stroke-linejoin:round;cursor:pointer;transition:fill .22s,stroke .22s}
   .villa-plan .lot:focus{outline:none}
-  .villa-plan .lot.active{fill:var(--bordeaux);fill-opacity:.34;stroke:var(--bordeaux);stroke-opacity:.95}
+  .villa-plan .lot.active{fill:var(--bordeaux);fill-opacity:.72;stroke:var(--bordeaux-deep);stroke-opacity:1}
   @media (hover:hover){
-    .villa-plan .lot:hover{fill:var(--bordeaux);fill-opacity:.16;stroke:var(--bordeaux);stroke-opacity:.55}
-    .villa-plan .lot.active:hover{fill-opacity:.4}
+    .villa-plan .lot:hover{fill:var(--bordeaux);fill-opacity:.3;stroke:var(--bordeaux);stroke-opacity:.7}
+    .villa-plan .lot.active:hover{fill-opacity:.8}
   }
 
   /* VILLAS TABLE */
@@ -392,21 +399,23 @@
 
     <div class="reveal">
       <div class="plan-intro">
-        <span class="plan-hint">Cliquez une villa sur le plan</span>
+        <span class="plan-hint">Sélectionnez une villa sur le plan</span>
         <span class="plan-readout" id="planReadout"></span>
       </div>
+      <div class="villa-plan-scroll">
       <div class="villa-plan">
-        <img src="img/plan-villas.webp" alt="Plan de situation — les 8 villas, parcelles 150 &amp; 151" loading="lazy">
-        <svg viewBox="0 0 2750 1790" preserveAspectRatio="none" aria-hidden="false">
-          <polygon class="lot" data-lot="A1" tabindex="0" role="button" aria-label="Villa A1" points="900,817 1250,676 1322,827 972,968"></polygon>
-          <polygon class="lot" data-lot="A2" tabindex="0" role="button" aria-label="Villa A2" points="972,968 1322,827 1394,978 1044,1119"></polygon>
-          <polygon class="lot" data-lot="A3" tabindex="0" role="button" aria-label="Villa A3" points="1044,1119 1394,978 1466,1129 1116,1270"></polygon>
-          <polygon class="lot" data-lot="A4" tabindex="0" role="button" aria-label="Villa A4" points="1116,1270 1466,1129 1538,1280 1188,1421"></polygon>
-          <polygon class="lot" data-lot="B1" tabindex="0" role="button" aria-label="Villa B1" points="1507,677 1671,618 1804,966 1640,1025"></polygon>
-          <polygon class="lot" data-lot="B2" tabindex="0" role="button" aria-label="Villa B2" points="1671,618 1829,562 1962,910 1804,966"></polygon>
-          <polygon class="lot" data-lot="B3" tabindex="0" role="button" aria-label="Villa B3" points="1829,562 1986,506 2119,854 1962,910"></polygon>
-          <polygon class="lot" data-lot="B4" tabindex="0" role="button" aria-label="Villa B4" points="1986,506 2150,447 2283,795 2119,854"></polygon>
+        <img src="img/plan-villas.webp" width="1600" height="1056" alt="Plan de situation — les 8 villas, parcelles 150 &amp; 151">
+        <svg viewBox="0 0 2150 1420" preserveAspectRatio="none" aria-hidden="false">
+          <polygon class="lot" data-lot="A1" tabindex="0" role="button" aria-label="Villa A1" points="570,587 920,446 992,597 642,738"></polygon>
+          <polygon class="lot" data-lot="A2" tabindex="0" role="button" aria-label="Villa A2" points="642,738 992,597 1064,748 714,889"></polygon>
+          <polygon class="lot" data-lot="A3" tabindex="0" role="button" aria-label="Villa A3" points="714,889 1064,748 1136,899 786,1040"></polygon>
+          <polygon class="lot" data-lot="A4" tabindex="0" role="button" aria-label="Villa A4" points="786,1040 1136,899 1208,1050 858,1191"></polygon>
+          <polygon class="lot" data-lot="B1" tabindex="0" role="button" aria-label="Villa B1" points="1177,447 1341,388 1474,736 1310,795"></polygon>
+          <polygon class="lot" data-lot="B2" tabindex="0" role="button" aria-label="Villa B2" points="1341,388 1499,332 1632,680 1474,736"></polygon>
+          <polygon class="lot" data-lot="B3" tabindex="0" role="button" aria-label="Villa B3" points="1499,332 1656,276 1789,624 1632,680"></polygon>
+          <polygon class="lot" data-lot="B4" tabindex="0" role="button" aria-label="Villa B4" points="1656,276 1820,217 1953,565 1789,624"></polygon>
         </svg>
+      </div>
       </div>
     </div>
 
