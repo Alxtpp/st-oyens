@@ -51,10 +51,14 @@
 
   /* HERO */
   .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
-  .hero-bg{position:absolute;inset:0;background:#cfc6b6 url("img/hero-terrasse-jardin.webp") center/cover no-repeat;transform:scale(1.05);animation:kb 18s ease-out forwards}
-  @keyframes kb{to{transform:scale(1)}}
-  @media (prefers-reduced-motion:reduce){.hero-bg{animation:none;transform:none}}
-  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(59,53,45,.34) 0%,rgba(59,53,45,.08) 34%,rgba(59,53,45,.50) 72%,rgba(59,53,45,.80) 100%)}
+  /* L'image reste en fond : elle s'affiche pendant le chargement de la vidéo,
+     et sert de repli si la lecture est bloquée ou si l'animation est réduite. */
+  .hero-bg{position:absolute;inset:0;background:#cfc6b6 url("img/hero-terrasse-jardin.webp") center/cover no-repeat}
+  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:0}
+  @media (prefers-reduced-motion:reduce){.hero-video{display:none}}
+  /* Voile renforcé depuis le passage à la vidéo : elle traverse des intérieurs
+     très clairs où le texte blanc ne tenait plus. */
+  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(59,53,45,.46) 0%,rgba(59,53,45,.30) 32%,rgba(59,53,45,.58) 70%,rgba(59,53,45,.86) 100%)}
   .hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:74px;padding-top:120px}
   .hero .eyebrow{color:#EBD3B4}
   .hero h1{font-size:clamp(42px,7.6vw,92px);font-weight:800;margin:18px 0 22px;max-width:15ch;color:#FBF8F2;text-shadow:0 2px 30px rgba(45,40,34,.35)}
@@ -167,6 +171,10 @@
   .fg-tall{grid-column:span 2;aspect-ratio:1}
   .fg-half{grid-column:span 3;aspect-ratio:16/9}
   .fg-port{grid-column:span 2;aspect-ratio:2/3}
+  /* Planche technique : contain et non cover — recadrer une coupe la mutilerait. */
+  .gal-grid .fg-plan{grid-column:span 6;aspect-ratio:2/1;background:#fff}
+  .gal-grid .fg-plan img{object-fit:contain}
+  .gal-grid .fg-plan:hover img{transform:none}
 
   /* DOCUMENTS */
   .docs{background:var(--cream)}
@@ -263,6 +271,7 @@
     .doc-grid{grid-template-columns:1fr}
     .gal-grid{grid-template-columns:1fr}
     .fg-wide,.fg-half,.fg-tall,.fg-port{grid-column:span 1;aspect-ratio:16/9}
+    .gal-grid .fg-plan{grid-column:span 1;aspect-ratio:1}
     form{grid-template-columns:1fr}
     .modal form{grid-template-columns:1fr}
     .villa-table .hide-m{display:none}
@@ -298,7 +307,12 @@
 
 <!-- HERO -->
 <section class="hero" id="top">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto"
+           poster="img/hero-terrasse-jardin.webp" aria-label="Visite des Jardins de St-Oyens">
+      <source src="video/visite-jardins-st-oyens.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="wrap">
     <p class="eyebrow">La Côte vaudoise</p>
     <h1>Les Jardins de St‑Oyens</h1>
@@ -468,6 +482,7 @@
       <figure class="fg-half"><img class="lb" src="img/chambre-enfant.webp" alt="Chambre d'enfant" loading="lazy" width="2000" height="1116"></figure>
       <figure class="fg-port"><img class="lb" src="img/couloir-rez.webp" alt="Hall de distribution du rez-de-chaussée" loading="lazy" width="1067" height="1600"></figure>
       <figure class="fg-wide"><img class="lb" src="img/hero-terrasse-jardin.webp" alt="Terrasse et jardin privatif" loading="lazy" width="2400" height="1339"></figure>
+      <figure class="fg-plan"><img class="lb" src="img/coupe-transversale.webp" alt="Coupe transversale — du sous-sol aux combles" loading="lazy" width="1700" height="1668"></figure>
     </div>
   </div>
 </section>
