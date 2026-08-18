@@ -46,11 +46,16 @@ cd ~/st-oyens && python3 -m http.server 3000
 
 ## Points d'attention
 
-- Le plan interactif des villas (`#villas`) est un calque SVG de 8 polygones au-dessus de `img/plan-villas.webp`.
-  Le `viewBox` est `0 0 2150 1420` et correspond exactement au cadrage de `2502_260416_Saint-Oyens_TU.pdf`
-  page 1 : `pdftoppm -r 200 -f 1 -l 1 -png -x 580 -y 270 -W 2150 -H 1420`, puis `sips -Z 1600` + `cwebp -q 84`.
-  Si l'image du plan change, les polygones sont à recaler. Un simple recadrage se répercute par une
-  translation des `points` (soustraire le déplacement de l'origine) — pas besoin de tout retracer.
+- Le plan interactif des villas (`#villas`) est un calque SVG de 8 polygones au-dessus de
+  `img/plan-villas-axo.webp` — l'axonométrie fournie par le client (`schem _bw.jpg`, recadrée
+  puis convertie en webp 1600x887). Le `viewBox` est `0 0 1600 887`.
+  Les polygones couvrent les toitures. Ils ne sont pas tracés à la main : ils sont générés à
+  partir du profil de pignon de la première villa de chaque rang (avant-toit bas, faîte,
+  avant-toit haut) répété le long du rang. Attention, **le pas n'est pas uniforme** : les
+  villas d'extrémité font 6,65 m et celles du milieu 6,40 m.
+  Rang A = bâtiment au premier plan, A1 en haut à gauche vers A4 en bas à droite.
+  Rang B = bâtiment à l'arrière, B1 en bas à gauche vers B4 en haut à droite.
+  Si l'image change, tout se recalcule : voir le commit « Plan interactif : axonométrie ».
 - L'image du plan ne doit **pas** être en `loading="lazy"` : dans un conteneur en `position:relative`
   sans hauteur propre, le lazy-load ne se déclenche jamais et l'image reste invisible.
   Elle garde ses attributs `width`/`height` et un `aspect-ratio` pour réserver sa place.
