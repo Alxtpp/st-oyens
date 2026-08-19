@@ -651,23 +651,45 @@
     form.addEventListener('submit',e=>{
       e.preventDefault();
       if(!form.checkValidity()){form.reportValidity();return;}
-      /* ---- POINT D'INTÉGRATION LEADS ----
-         Brancher ici l'envoi (Formspree / Netlify Forms / webhook) :
-         fetch('https://formspree.io/f/XXXX',{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
-         Sans backend, le lead n'est PAS transmis — voir note de livraison. */
-      step1.style.display='none';
-      step2.classList.add('show');
+      /* Le lead part vers Web3Forms (même service que vergers14). La brochure est
+         toujours débloquée ensuite, même si l'envoi échoue — on ne bloque pas le
+         téléchargement sur un aléa réseau. */
+      const reveal=()=>{step1.style.display='none';step2.classList.add('show');};
+      const btn=form.querySelector('[type=submit]'); btn.disabled=true;
+      fetch('https://api.web3forms.com/submit',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          access_key:'52d7116d-e01c-48f7-bdb4-bb65cd3a3ae5',
+          subject:'Demande de brochure — Les Jardins de St-Oyens',
+          from_name:'Les Jardins de St-Oyens',
+          nom:form.nom.value,prenom:form.prenom.value,telephone:form.tel.value,email:form.email.value,message:'Demande de brochure'
+        })
+      }).then(reveal).catch(reveal);
     });
   })();
 
-  /* FORMULAIRE CONTACT */
+  /* FORMULAIRE CONTACT — envoi via Web3Forms (même service que vergers14) */
   document.getElementById('contactForm').addEventListener('submit',e=>{
     e.preventDefault();
     const f=e.target;
     if(!f.checkValidity()){f.reportValidity();return;}
-    /* ---- POINT D'INTÉGRATION LEADS (idem ci-dessus) ---- */
-    document.getElementById('okMsg').classList.add('show');
-    f.reset();
+    const btn=f.querySelector('[type=submit]'); btn.disabled=true;
+    fetch('https://api.web3forms.com/submit',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        access_key:'52d7116d-e01c-48f7-bdb4-bb65cd3a3ae5',
+        subject:'Nouveau message — Les Jardins de St-Oyens',
+        from_name:'Les Jardins de St-Oyens',
+        nom:f.nom.value,prenom:f.prenom.value,telephone:f.tel.value,email:f.email.value,message:f.message.value
+      })
+    }).then(r=>r.json()).then(d=>{
+      if(d.success){
+        const ok=document.getElementById('okMsg');
+        ok.classList.add('show'); f.reset();
+        setTimeout(()=>ok.classList.remove('show'),6000);
+      } else { alert('Erreur lors de l\'envoi. Veuillez réessayer.'); }
+    }).catch(()=>alert('Erreur réseau. Veuillez réessayer.'))
+      .finally(()=>{btn.disabled=false;});
   });
 </script>
 </body>
