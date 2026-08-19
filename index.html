@@ -180,6 +180,8 @@
   .fg-tall{grid-column:span 2;aspect-ratio:1}
   .fg-half{grid-column:span 3;aspect-ratio:16/9}
   .fg-port{grid-column:span 2;aspect-ratio:2/3}
+  /* Tuile étroite : complète la dernière ligne à 6 colonnes pile. */
+  .fg-sm{grid-column:span 2;aspect-ratio:4/3}
 
   /* DOCUMENTS */
   .docs{background:var(--cream)}
@@ -275,7 +277,7 @@
     .esp-figs{position:static}
     .doc-grid{grid-template-columns:1fr}
     .gal-grid{grid-template-columns:1fr}
-    .fg-wide,.fg-half,.fg-tall,.fg-port{grid-column:span 1;aspect-ratio:16/9}
+    .fg-wide,.fg-half,.fg-tall,.fg-port,.fg-sm{grid-column:span 1;aspect-ratio:16/9}
     form{grid-template-columns:1fr}
     .modal form{grid-template-columns:1fr}
     .villa-table .hide-m{display:none}
@@ -486,7 +488,8 @@
       <figure class="fg-half"><img class="lb" src="img/suite-parentale.webp" alt="Suite parentale" loading="lazy" width="2000" height="1125"></figure>
       <figure class="fg-half"><img class="lb" src="img/chambre-enfant.webp" alt="Chambre d'enfant" loading="lazy" width="2000" height="1116"></figure>
       <figure class="fg-port"><img class="lb" src="img/couloir-rez.webp" alt="Hall de distribution du rez-de-chaussée" loading="lazy" width="1067" height="1600"></figure>
-      <figure class="fg-wide"><img class="lb" src="img/hero-terrasse-jardin.webp" alt="Terrasse et jardin privatif" loading="lazy" width="2400" height="1339"></figure>
+      <figure class="fg-tall"><img class="lb" src="img/suite-parentale-2.webp" alt="Suite parentale, dressing et accès terrasse" loading="lazy" width="1800" height="1800"></figure>
+      <figure class="fg-sm"><img class="lb" src="img/hero-terrasse-jardin.webp" alt="Terrasse et jardin privatif" loading="lazy" width="2400" height="1339"></figure>
     </div>
   </div>
 </section>
