@@ -50,18 +50,18 @@
   header.nav.scrolled .burger span{background:var(--ink)}
 
   /* HERO */
-  .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
+  .hero{position:relative;min-height:100vh;display:flex;align-items:flex-start;overflow:hidden}
   /* L'image reste en fond : elle s'affiche pendant le chargement de la vidéo,
      et sert de repli si la lecture est bloquée ou si l'animation est réduite. */
   .hero-bg{position:absolute;inset:0;background:#cfc6b6 url("img/hero-terrasse-jardin.webp") center/cover no-repeat}
   .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border:0}
   @media (prefers-reduced-motion:reduce){.hero-video{display:none}}
-  /* Voile renforcé depuis le passage à la vidéo : elle traverse des intérieurs
-     très clairs où le texte blanc ne tenait plus. */
-  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(59,53,45,.46) 0%,rgba(59,53,45,.30) 32%,rgba(59,53,45,.58) 70%,rgba(59,53,45,.86) 100%)}
-  .hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:74px;padding-top:120px}
-  .hero .eyebrow{color:#EBD3B4}
-  .hero h1{font-size:clamp(42px,7.6vw,92px);font-weight:800;margin:18px 0 22px;max-width:15ch;color:#FBF8F2;text-shadow:0 2px 30px rgba(45,40,34,.35)}
+  /* Voile appuyé en haut, où le texte est désormais posé : la vidéo traverse des
+     intérieurs très clairs. Il s'éclaircit au milieu pour dégager l'image, puis
+     revient un peu en bas pour le sceau « 8 villas ». */
+  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(59,53,45,.74) 0%,rgba(59,53,45,.56) 30%,rgba(59,53,45,.26) 62%,rgba(59,53,45,.56) 100%)}
+  .hero .wrap{position:relative;z-index:2;width:100%;padding-top:150px;padding-bottom:74px}
+  .hero h1{font-size:clamp(42px,7.6vw,92px);font-weight:800;margin:0 0 22px;max-width:15ch;color:#FBF8F2;text-shadow:0 2px 30px rgba(45,40,34,.35)}
   .hero .lede{font-size:clamp(16px,2vw,20px);max-width:48ch;color:rgba(251,248,242,.94);font-weight:300;text-shadow:0 1px 18px rgba(45,40,34,.4)}
   .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
   .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:13.5px;font-weight:600;padding:15px 30px;transition:.25s;cursor:pointer;border:1px solid transparent;border-radius:2px}
@@ -114,13 +114,17 @@
   .esp-item p b{color:var(--ink);font-weight:500}
   .esp-figs{display:flex;flex-direction:column;gap:16px;position:sticky;top:100px}
   .esp-fig{background:var(--sand);overflow:hidden}
+  /* La coupe est une planche sur fond blanc : le cream de la section trancherait. */
+  .esp-plan{background:#fff}
   .esp-fig img{width:100%;height:100%;object-fit:cover;display:block}
   .esp-cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:10px}
 
   /* PLAN INTERACTIF DES VILLAS */
   .plan-intro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px}
   .plan-hint{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
-  .plan-readout{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--bordeaux);min-height:23px}
+  /* min-height = la hauteur exacte d'une ligne remplie (15px × 1.65), pour que
+     l'apparition du texte ne pousse rien. */
+  .plan-readout{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--bordeaux);min-height:25px}
   .villa-plan-scroll{margin-bottom:34px}
   .villa-plan{position:relative;background:var(--cream);border:1px solid var(--line);overflow:hidden}
   /* Sur mobile le plan est agrandi et défile horizontalement : sinon les lots
@@ -128,6 +132,11 @@
   @media (max-width:720px){
     .villa-plan-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
     .villa-plan{width:740px}
+    /* Le readout est empilé sous le libellé et sa ligne est réservée dès le départ :
+       en flex il passait à la ligne au moment du clic et faisait descendre le plan
+       de 30 px sous le doigt. */
+    .plan-intro{display:block}
+    .plan-readout{display:block;margin-top:4px}
   }
   .villa-plan img{width:100%;height:auto;display:block;aspect-ratio:1600/887}
   .villa-plan svg{position:absolute;inset:0;width:100%;height:100%}
@@ -171,10 +180,6 @@
   .fg-tall{grid-column:span 2;aspect-ratio:1}
   .fg-half{grid-column:span 3;aspect-ratio:16/9}
   .fg-port{grid-column:span 2;aspect-ratio:2/3}
-  /* Planche technique : contain et non cover — recadrer une coupe la mutilerait. */
-  .gal-grid .fg-plan{grid-column:span 6;aspect-ratio:2/1;background:#fff}
-  .gal-grid .fg-plan img{object-fit:contain}
-  .gal-grid .fg-plan:hover img{transform:none}
 
   /* DOCUMENTS */
   .docs{background:var(--cream)}
@@ -271,7 +276,6 @@
     .doc-grid{grid-template-columns:1fr}
     .gal-grid{grid-template-columns:1fr}
     .fg-wide,.fg-half,.fg-tall,.fg-port{grid-column:span 1;aspect-ratio:16/9}
-    .gal-grid .fg-plan{grid-column:span 1;aspect-ratio:1}
     form{grid-template-columns:1fr}
     .modal form{grid-template-columns:1fr}
     .villa-table .hide-m{display:none}
@@ -314,7 +318,6 @@
     </video>
   </div>
   <div class="wrap">
-    <p class="eyebrow">La Côte vaudoise</p>
     <h1>Les Jardins de St‑Oyens</h1>
     <p class="lede">Un écrin de verdure sur les hauts de Rolle, à mi‑chemin entre Lausanne et Genève.</p>
     <div class="hero-actions">
@@ -390,8 +393,8 @@
       </div>
       <div class="esp-figs reveal">
         <div>
-          <div class="esp-fig"><img class="lb" src="img/axo-villas.webp" alt="Les deux groupes de villas et leurs jardins privatifs" loading="lazy"></div>
-          <p class="esp-cap">Les deux groupes de villas et leurs jardins privatifs</p>
+          <div class="esp-fig esp-plan"><img class="lb" src="img/coupe-transversale.webp" alt="Coupe transversale — du sous-sol aux combles" loading="lazy" width="1700" height="1668"></div>
+          <p class="esp-cap">Coupe transversale — du sous-sol aux combles</p>
         </div>
         <div>
           <div class="esp-fig"><img class="lb" src="img/suite-parentale-2.webp" alt="Suite parentale, dressing et accès terrasse" loading="lazy" width="1800" height="1800"></div>
@@ -420,14 +423,14 @@
       <div class="villa-plan">
         <img src="img/plan-villas-axo.webp" width="1600" height="887" alt="Vue axonométrique des 8 villas, groupes A et B">
         <svg viewBox="0 0 1600 887" preserveAspectRatio="none" aria-hidden="false">
-          <polygon class="lot" data-lot="A1" tabindex="0" role="button" aria-label="Villa A1" points="271,470 413,315 497,287 619,344 535,372 393,527"></polygon>
-          <polygon class="lot" data-lot="A2" tabindex="0" role="button" aria-label="Villa A2" points="393,527 535,372 619,344 737,399 653,427 511,582"></polygon>
-          <polygon class="lot" data-lot="A3" tabindex="0" role="button" aria-label="Villa A3" points="511,582 653,427 737,399 855,454 771,482 629,637"></polygon>
-          <polygon class="lot" data-lot="A4" tabindex="0" role="button" aria-label="Villa A4" points="629,637 771,482 855,454 984,514 900,542 758,697"></polygon>
-          <polygon class="lot" data-lot="B1" tabindex="0" role="button" aria-label="Villa B1" points="960,396 797,230 714,264 821,211 904,177 1067,343"></polygon>
-          <polygon class="lot" data-lot="B2" tabindex="0" role="button" aria-label="Villa B2" points="1067,343 904,177 821,211 924,160 1007,126 1170,292"></polygon>
-          <polygon class="lot" data-lot="B3" tabindex="0" role="button" aria-label="Villa B3" points="1170,292 1007,126 924,160 1027,109 1110,75 1273,241"></polygon>
-          <polygon class="lot" data-lot="B4" tabindex="0" role="button" aria-label="Villa B4" points="1273,241 1110,75 1027,109 1140,53 1223,19 1386,185"></polygon>
+          <polygon class="lot" data-lot="A1" tabindex="0" role="button" aria-label="Villa A1" points="271,595 271,470 413,315 497,287 619,344 535,372 393,527 393,652"></polygon>
+          <polygon class="lot" data-lot="A2" tabindex="0" role="button" aria-label="Villa A2" points="393,652 393,527 535,372 619,344 737,399 653,427 511,582 511,707"></polygon>
+          <polygon class="lot" data-lot="A3" tabindex="0" role="button" aria-label="Villa A3" points="511,707 511,582 653,427 737,399 855,454 771,482 629,637 629,762"></polygon>
+          <polygon class="lot" data-lot="A4" tabindex="0" role="button" aria-label="Villa A4" points="629,762 629,637 771,482 855,454 984,514 900,542 758,697 758,822"></polygon>
+          <polygon class="lot" data-lot="B1" tabindex="0" role="button" aria-label="Villa B1" points="960,491 960,396 797,230 714,264 821,211 904,177 1067,343 1067,438"></polygon>
+          <polygon class="lot" data-lot="B2" tabindex="0" role="button" aria-label="Villa B2" points="1067,438 1067,343 904,177 821,211 924,160 1007,126 1170,292 1170,387"></polygon>
+          <polygon class="lot" data-lot="B3" tabindex="0" role="button" aria-label="Villa B3" points="1170,387 1170,292 1007,126 924,160 1027,109 1110,75 1273,241 1273,336"></polygon>
+          <polygon class="lot" data-lot="B4" tabindex="0" role="button" aria-label="Villa B4" points="1273,336 1273,241 1110,75 1027,109 1140,53 1223,19 1386,185 1386,280"></polygon>
         </svg>
       </div>
       </div>
@@ -476,13 +479,14 @@
       <h2>Le projet en images</h2>
     </div>
     <div class="gal-grid reveal">
-      <figure class="fg-wide"><img class="lb" src="img/salon-cuisine.webp" alt="Salon-cuisine ouvert sur la terrasse et le jardin" loading="lazy" width="2000" height="1125"></figure>
+      <figure class="fg-wide"><img class="lb" src="img/exterieur-jardin.webp" alt="Les villas et leurs jardins depuis le chemin" loading="lazy" width="2000" height="1125"></figure>
       <figure class="fg-tall"><img class="lb" src="img/hall-cuisine.webp" alt="Hall d'entrée et cuisine" loading="lazy" width="1800" height="1800"></figure>
+      <figure class="fg-half"><img class="lb" src="img/exterieur-pignon.webp" alt="Pignon et œil-de-bœuf, façade en crépi minéral" loading="lazy" width="2000" height="1129"></figure>
+      <figure class="fg-half"><img class="lb" src="img/salon-cuisine.webp" alt="Salon-cuisine ouvert sur la terrasse et le jardin" loading="lazy" width="2000" height="1125"></figure>
       <figure class="fg-half"><img class="lb" src="img/suite-parentale.webp" alt="Suite parentale" loading="lazy" width="2000" height="1125"></figure>
       <figure class="fg-half"><img class="lb" src="img/chambre-enfant.webp" alt="Chambre d'enfant" loading="lazy" width="2000" height="1116"></figure>
       <figure class="fg-port"><img class="lb" src="img/couloir-rez.webp" alt="Hall de distribution du rez-de-chaussée" loading="lazy" width="1067" height="1600"></figure>
       <figure class="fg-wide"><img class="lb" src="img/hero-terrasse-jardin.webp" alt="Terrasse et jardin privatif" loading="lazy" width="2400" height="1339"></figure>
-      <figure class="fg-plan"><img class="lb" src="img/coupe-transversale.webp" alt="Coupe transversale — du sous-sol aux combles" loading="lazy" width="1700" height="1668"></figure>
     </div>
   </div>
 </section>
@@ -596,8 +600,26 @@
       rows.forEach(r=>r.classList.toggle('active',!isOn&&r.dataset.lot===lot));
       readout.textContent=isOn?'':'Villa '+lot+' · jardin de '+surfaces[lot];
     }
+    /* Les polygones sont focusables (tabindex) : au clic, le navigateur fait
+       défiler .villa-plan-scroll pour amener le lot focusé dans la vue, et le plan
+       sautait latéralement sous le doigt. On mémorise la position au pointerdown et
+       on la restaure dans le click — le défilement natif est appliqué après l'événement
+       focus, le restaurer depuis 'focus' serait donc écrasé. Le rAF couvre les
+       navigateurs qui le diffèrent d'une frame.
+       Au clavier (Tab, sans pointerdown) le défilement reste actif : c'est justement
+       ce qu'on veut pour suivre le focus. */
+    const scroller=document.querySelector('.villa-plan-scroll');
+    let keepLeft=null;
+    function restoreScroll(){
+      if(keepLeft===null)return;
+      const v=keepLeft; keepLeft=null;
+      scroller.scrollLeft=v;
+      requestAnimationFrame(()=>{scroller.scrollLeft=v;});
+    }
+
     lots.forEach(p=>{
-      p.addEventListener('click',()=>select(p.dataset.lot));
+      p.addEventListener('pointerdown',()=>{keepLeft=scroller.scrollLeft;});
+      p.addEventListener('click',()=>{select(p.dataset.lot);restoreScroll();});
       p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(p.dataset.lot);}});
     });
     rows.forEach(r=>r.addEventListener('click',()=>select(r.dataset.lot)));
@@ -664,7 +686,7 @@
           from_name:'Les Jardins de St-Oyens',
           nom:form.nom.value,prenom:form.prenom.value,telephone:form.tel.value,email:form.email.value,message:'Demande de brochure'
         })
-      }).then(reveal).catch(reveal);
+      }).then(reveal).catch(reveal).finally(()=>{btn.disabled=false;});
     });
   })();
 
