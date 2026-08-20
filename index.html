@@ -119,43 +119,21 @@
   .esp-fig img{width:100%;height:100%;object-fit:cover;display:block}
   .esp-cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:10px}
 
-  /* PLAN INTERACTIF DES VILLAS */
-  .plan-intro{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:16px}
-  .plan-hint{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
-  /* min-height = la hauteur exacte d'une ligne remplie (15px × 1.65), pour que
-     l'apparition du texte ne pousse rien. */
-  .plan-readout{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--bordeaux);min-height:25px}
+  /* PLAN DES VILLAS */
   .villa-plan-scroll{margin-bottom:34px}
   .villa-plan{position:relative;background:var(--cream);border:1px solid var(--line);overflow:hidden}
-  /* Sur mobile le plan est agrandi et défile horizontalement : sinon les lots
-     seraient trop petits pour être touchés au doigt. */
+  /* Sur mobile le plan est agrandi et défile horizontalement pour rester lisible. */
   @media (max-width:720px){
     .villa-plan-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
     .villa-plan{width:740px}
-    /* Le readout est empilé sous le libellé et sa ligne est réservée dès le départ :
-       en flex il passait à la ligne au moment du clic et faisait descendre le plan
-       de 30 px sous le doigt. */
-    .plan-intro{display:block}
-    .plan-readout{display:block;margin-top:4px}
   }
   .villa-plan img{width:100%;height:auto;display:block;aspect-ratio:1600/887}
-  .villa-plan svg{position:absolute;inset:0;width:100%;height:100%}
-  .villa-plan .lot{fill:transparent;stroke:transparent;stroke-width:8;stroke-linejoin:round;cursor:pointer;transition:fill .22s,stroke .22s}
-  .villa-plan .lot:focus{outline:none}
-  .villa-plan .lot.active{fill:var(--bordeaux);fill-opacity:.72;stroke:var(--bordeaux-deep);stroke-opacity:1}
-  @media (hover:hover){
-    .villa-plan .lot:hover{fill:var(--bordeaux);fill-opacity:.3;stroke:var(--bordeaux);stroke-opacity:.7}
-    .villa-plan .lot.active:hover{fill-opacity:.8}
-  }
 
   /* VILLAS TABLE */
   .villa-table{width:100%;border-collapse:collapse}
   .villa-table th{text-align:left;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);padding:0 16px 18px;border-bottom:1px solid var(--ink)}
   .villa-table td{padding:22px 16px;border-bottom:1px solid var(--line);font-size:15px;color:var(--text);transition:background .2s}
-  .villa-table tbody tr{cursor:pointer}
   .villa-table tbody tr:hover td{background:var(--cream)}
-  .villa-table tbody tr.active td{background:rgba(122,46,58,.09)}
-  .villa-table tbody tr.active .lot{color:var(--bordeaux)}
   .villa-table .lot{font-family:var(--disp);font-weight:800;font-size:23px;color:var(--ink);transition:color .2s}
   .grp-tag{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--line);color:var(--mute)}
   .grp-tag.b{border-color:var(--clay);color:var(--bordeaux)}
@@ -417,23 +395,9 @@
     </div>
 
     <div class="reveal">
-      <div class="plan-intro">
-        <span class="plan-hint">Sélectionnez une villa sur le schéma</span>
-        <span class="plan-readout" id="planReadout"></span>
-      </div>
       <div class="villa-plan-scroll">
       <div class="villa-plan">
         <img src="img/plan-villas-axo.webp" width="1600" height="887" alt="Vue axonométrique des 8 villas, groupes A et B">
-        <svg viewBox="0 0 1600 887" preserveAspectRatio="none" aria-hidden="false">
-          <polygon class="lot" data-lot="A1" tabindex="0" role="button" aria-label="Villa A1" points="271,600 271,470 413,315 497,287 619,344 535,372 393,527 393,657 291,739 169,682"></polygon>
-          <polygon class="lot" data-lot="A2" tabindex="0" role="button" aria-label="Villa A2" points="393,657 393,527 535,372 619,344 737,399 653,427 511,582 511,712 409,794 291,739"></polygon>
-          <polygon class="lot" data-lot="A3" tabindex="0" role="button" aria-label="Villa A3" points="511,712 511,582 653,427 737,399 855,454 771,482 629,637 629,767 528,849 409,794"></polygon>
-          <polygon class="lot" data-lot="A4" tabindex="0" role="button" aria-label="Villa A4" points="629,767 629,637 771,482 855,454 984,514 984,644 758,827 657,910 528,849"></polygon>
-          <polygon class="lot" data-lot="B1" tabindex="0" role="button" aria-label="Villa B1" points="960,501 714,369 714,264 821,211 904,177 1067,343 1067,448 1240,540 1133,593"></polygon>
-          <polygon class="lot" data-lot="B2" tabindex="0" role="button" aria-label="Villa B2" points="1067,448 1067,343 904,177 821,211 924,160 1007,126 1170,292 1170,397 1343,489 1240,540"></polygon>
-          <polygon class="lot" data-lot="B3" tabindex="0" role="button" aria-label="Villa B3" points="1170,397 1170,292 1007,126 924,160 1027,109 1110,75 1273,241 1273,346 1446,438 1343,489"></polygon>
-          <polygon class="lot" data-lot="B4" tabindex="0" role="button" aria-label="Villa B4" points="1273,346 1273,241 1110,75 1027,109 1140,53 1223,19 1386,185 1386,290 1558,382 1446,438"></polygon>
-        </svg>
       </div>
       </div>
     </div>
@@ -588,45 +552,6 @@
   /* REVEAL */
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  /* PLAN INTERACTIF DES VILLAS */
-  (function(){
-    const lots=[...document.querySelectorAll('.villa-plan .lot')];
-    const rows=[...document.querySelectorAll('.villa-table tbody tr')];
-    const readout=document.getElementById('planReadout');
-    const surfaces={};
-    rows.forEach(r=>{surfaces[r.dataset.lot]=r.children[4].textContent.trim();});
-
-    function select(lot){
-      const isOn=lots.some(p=>p.dataset.lot===lot&&p.classList.contains('active'));
-      lots.forEach(p=>p.classList.toggle('active',!isOn&&p.dataset.lot===lot));
-      rows.forEach(r=>r.classList.toggle('active',!isOn&&r.dataset.lot===lot));
-      readout.textContent=isOn?'':'Villa '+lot+' · jardin de '+surfaces[lot];
-    }
-    /* Les polygones sont focusables (tabindex) : au clic, le navigateur fait
-       défiler .villa-plan-scroll pour amener le lot focusé dans la vue, et le plan
-       sautait latéralement sous le doigt. On mémorise la position au pointerdown et
-       on la restaure dans le click — le défilement natif est appliqué après l'événement
-       focus, le restaurer depuis 'focus' serait donc écrasé. Le rAF couvre les
-       navigateurs qui le diffèrent d'une frame.
-       Au clavier (Tab, sans pointerdown) le défilement reste actif : c'est justement
-       ce qu'on veut pour suivre le focus. */
-    const scroller=document.querySelector('.villa-plan-scroll');
-    let keepLeft=null;
-    function restoreScroll(){
-      if(keepLeft===null)return;
-      const v=keepLeft; keepLeft=null;
-      scroller.scrollLeft=v;
-      requestAnimationFrame(()=>{scroller.scrollLeft=v;});
-    }
-
-    lots.forEach(p=>{
-      p.addEventListener('pointerdown',()=>{keepLeft=scroller.scrollLeft;});
-      p.addEventListener('click',()=>{select(p.dataset.lot);restoreScroll();});
-      p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(p.dataset.lot);}});
-    });
-    rows.forEach(r=>r.addEventListener('click',()=>select(r.dataset.lot)));
-  })();
 
   /* LIGHTBOX */
   (function(){
